@@ -20,7 +20,7 @@ const main = () => {
   };
 
   const fallbackResult = message => {
-    clubListElement.renderEror(message);
+    clubListElement.renderError(message);
   };
 
   searchElement.clickEvent = onButtonSearchClicked;

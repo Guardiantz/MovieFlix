@@ -6,18 +6,37 @@ class SearchBar extends HTMLElement {
     this.shadowDOM = this.attachShadow({mode: 'open'});
   }  
 
-    connectedCallback() {
-      this.render();
-    }
-    
-    set clickEvent(event) {
-      this._clickEvent = event;
-      this.render();
-    }
-   
-    get value() {
-      return this.shadowDOM.querySelector('#searchElement').value;
-    }
+  connectedCallback() {
+    this.render();
+    this.shadowDOM.querySelector('#searchElement').addEventListener('input', this._handleInputChange.bind(this));
+  }
+
+  set clickEvent(event) {
+    this._clickEvent = event;
+    this.render();
+  }
+
+  get value() {
+    return this.shadowDOM.querySelector('#searchElement').value;
+  }
+
+_handleInputChange() {
+  const keyword = this.value;
+  const searchResultsElement = this.shadowDOM.querySelector('#searchResults');
+
+  if (keyword.length > 0) {
+    DataSource.searchClub(keyword)
+      .then(results => {
+        console.log(results); // Menampilkan hasil pencarian 
+        searchResultsElement.innerHTML = '';
+        // Untuk mampilkan hasil pencarian baru
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+}
+
    
     render() {
       this.shadowDOM.innerHTML = `
@@ -32,7 +51,7 @@ class SearchBar extends HTMLElement {
         position: sticky;
         top: 10px;
         background-color: white;
-        margin-left:15%
+        margin-left:26%
       }
     
       .search-container > input {
@@ -128,31 +147,51 @@ class SearchBar extends HTMLElement {
       }
      h1{
         color : #C70039;
-        margin-left: 280px;
+        margin-left: 420px;
         font-size:55px
+
       }
 
       @media screen and (max-width: 1000px) {
-        .h1 {
-          width : 100%
-          position: static;
-          margin-left:2px;
-        }
-        .search-container {
+        .navbar-container {
           flex-direction: column;
-          position: static;
+          align-items: center;
         }
     
-        .search-container > input {
-          width: 100%;
-          margin-bottom: 12px;
+        header.navbar-container .nav-list ul {
+          flex-direction: column;
+          gap: 1rem;
+          text-align: center;
+          margin-top: 1rem;
         }
     
+        header.navbar-container .nav-list li {
+          margin: 0;
+        }
+    
+        .search-container {
+          max-width: 100%;
+          margin: 0 auto; 
+          margin-top: 1rem; 
+        }
+    
+        .search-container > input,
         .search-container > button {
           width: 100%;
+          margin-bottom: 1rem; 
+        }
+    
+        header.navbar-container .nav-list,
+        header.navbar-container .login {
+          display: none;
+        }
+    
+        h1 {
+          font-size: 40px; 
+          text-align: center; 
+          margin: 1rem auto; 
         }
       }
-      
       </style>
       
       <body>
@@ -180,5 +219,5 @@ class SearchBar extends HTMLElement {
       this.shadowDOM.querySelector('#searchButtonElement').addEventListener('click', this._clickEvent);
     }
   }
-   
+  
   customElements.define('search-bar', SearchBar);

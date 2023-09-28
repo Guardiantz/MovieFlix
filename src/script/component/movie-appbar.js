@@ -28,7 +28,6 @@ class AppBar extends HTMLElement {
           }
         </style>
         
-        <h2>Club Finder</h2>
       `;
     }
   }

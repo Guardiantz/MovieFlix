@@ -13,7 +13,21 @@ class ClubList extends HTMLElement{
     }
 
     render(){
-        this.shadowDOM.innerHTML = "";
+        this.innerHTML = `
+        <style>
+        club-list {
+            width:130%;
+            display:flex;
+            flex-wrap:wrap;
+            gap:20px;
+        }
+      </style>
+        
+        `;
+        const searchResultsElement = document.createElement('div'); // Buat elemen untuk menampilkan hasil pencarian
+        searchResultsElement.id = 'searchResults';
+        this.appendChild(searchResultsElement);
+    
         this._clubs.forEach(club => {
             const clubItemElement = document.createElement('club-item');
             clubItemElement.club =club;
@@ -30,6 +44,7 @@ class ClubList extends HTMLElement{
           -moz-user-select: none;
           -ms-user-select: none;
           user-select: none;
+          
         }
       </style>
         

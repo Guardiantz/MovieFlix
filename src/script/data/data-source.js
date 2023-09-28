@@ -1,17 +1,20 @@
 class DataSource {
   static searchClub(keyword) {
-    return fetch(`https://sports-api.dicoding.dev/teams/search?t=${keyword}`)
+    const apiKey = '2aec8204'; 
+
+    return fetch(`http://www.omdbapi.com/?s=${keyword}&apikey=${apiKey}`)
         .then(response => {
           return response.json();
         })
         .then(responseJson => {
-          if (responseJson.teams) {
-            return Promise.resolve(responseJson.teams);
+          if (responseJson.Search) {
+            return Promise.resolve(responseJson.Search);
           } else {
-            return Promise.reject(`${keyword} is not found`);
+            return Promise.reject(`Tidak ada hasil untuk ${keyword}`);
           }
         });
   }
 }
 
-export default DataSource;  
+
+export default DataSource;
